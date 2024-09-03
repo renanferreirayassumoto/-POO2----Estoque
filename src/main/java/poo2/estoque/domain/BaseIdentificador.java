@@ -2,14 +2,23 @@ package poo2.estoque.domain;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public abstract class BaseIdentificador {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long codigo;
+
+    @DateTimeFormat(pattern = "yyy-MM-dd-HH.mm.ss")
     protected LocalDate dataDeInclusao;
+
+    @DateTimeFormat(pattern = "yyy-MM-dd-HH.mm.ss")
     protected LocalDate dataDeAlteracao;
 
     public Long getCodigo() {
