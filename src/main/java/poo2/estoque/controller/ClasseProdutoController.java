@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import poo2.estoque.domain.ClasseProduto;
-import poo2.estoque.service.ClasseProdutoServico;
+import poo2.estoque.service.ClasseProdutoServicoJPA;
 
 @RestController
 @RequestMapping("/api/estoque/classeproduto")
 public class ClasseProdutoController {
     
     @Autowired
-    private ClasseProdutoServico servico;
+    private ClasseProdutoServicoJPA servico;
 
-    public ClasseProdutoController(ClasseProdutoServico s){
+    public ClasseProdutoController(ClasseProdutoServicoJPA s){
         this.servico = s;
     }    
 
