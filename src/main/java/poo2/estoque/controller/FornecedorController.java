@@ -1,8 +1,11 @@
 package poo2.estoque.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,32 +29,44 @@ public class FornecedorController {
     }
 
     @GetMapping
-    public List<Fornecedor> getAll() {
+    public ResponseEntity<List<Fornecedor>> getAll() {
         List<Fornecedor> f = this.servico.Browse();
-        return f;
+        return new ResponseEntity<>(f, HttpStatus.OK);
     }
 
     @GetMapping("/{codigo}")
-    public Fornecedor getById(@PathVariable Long codigo) {
-        Fornecedor f = this.servico.Read(codigo);
-        return f;
+    public ResponseEntity<Fornecedor> getById(@PathVariable Long codigo) {
+        Optional<Fornecedor> opt = this.servico.Read(codigo);
+        if (opt.isPresent()) {
+            return new ResponseEntity<>(opt.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
-    public Fornecedor post(@RequestBody Fornecedor f) {
+    public ResponseEntity<Fornecedor> post(@RequestBody Fornecedor f) {
         Fornecedor fnew = this.servico.Add(f);
-        return fnew;
+        return new ResponseEntity<>(fnew, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public Fornecedor put(@RequestBody Fornecedor f) {
+    public ResponseEntity<Fornecedor> put(@RequestBody Fornecedor f) {
         Fornecedor falt = this.servico.Edit(f);
-        return falt;
+        if (falt != null) {
+            return new ResponseEntity<>(falt, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{codigo}")
-    public Fornecedor delete(@PathVariable Long codigo) {
+    public ResponseEntity<Fornecedor> delete(@PathVariable Long codigo) {
         Fornecedor fdel = this.servico.Delete(codigo);
-        return fdel;
+        if (fdel != null) {
+            return new ResponseEntity<>(fdel, HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

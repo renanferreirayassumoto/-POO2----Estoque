@@ -24,8 +24,8 @@ public class ProdutoServicoJPA implements IBaseServicoJPA<Produto> {
     }
 
     @Override
-    public Produto Read(Long chave) {
-        return this.repositorio.findById(chave).get();
+    public Optional<Produto> Read(Long chave) {
+        return this.repositorio.findById(chave);
     }
 
     @Override

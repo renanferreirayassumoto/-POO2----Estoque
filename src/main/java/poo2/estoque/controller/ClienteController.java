@@ -1,8 +1,11 @@
 package poo2.estoque.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,32 +29,44 @@ public class ClienteController {
     }
 
     @GetMapping
-    public List<Cliente> getAll() {
+    public ResponseEntity<List<Cliente>> getAll() {
         List<Cliente> cp = this.servico.Browse();
-        return cp;
+        return new ResponseEntity<>(cp, HttpStatus.OK);
     }
 
     @GetMapping("/{codigo}")
-    public Cliente getById(@PathVariable Long codigo) {
-        Cliente cp = this.servico.Read(codigo);
-        return cp;
+    public ResponseEntity<Cliente> getById(@PathVariable Long codigo) {
+        Optional<Cliente> opt = this.servico.Read(codigo);
+        if (opt.isPresent()) {
+            return new ResponseEntity<>(opt.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
-    public Cliente post(@RequestBody Cliente c) {
+    public ResponseEntity<Cliente> post(@RequestBody Cliente c) {
         Cliente cnew = this.servico.Add(c);
-        return cnew;
+        return new ResponseEntity<>(cnew, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public Cliente put(@RequestBody Cliente c) {
+    public ResponseEntity<Cliente> put(@RequestBody Cliente c) {
         Cliente calt = this.servico.Edit(c);
-        return calt;
+        if (calt != null) {
+            return new ResponseEntity<>(calt, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{codigo}")
-    public Cliente delete(@PathVariable Long codigo) {
+    public ResponseEntity<Cliente> delete(@PathVariable Long codigo) {
         Cliente cdel = this.servico.Delete(codigo);
-        return cdel;
+        if (cdel != null) {
+            return new ResponseEntity<>(cdel, HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

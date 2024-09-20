@@ -1,8 +1,11 @@
 package poo2.estoque.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,32 +29,44 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public List<Produto> getAll() {
+    public ResponseEntity<List<Produto>> getAll() {
         List<Produto> p = this.servico.Browse();
-        return p;
+        return new ResponseEntity<>(p, HttpStatus.OK);
     }
 
     @GetMapping("/{codigo}")
-    public Produto getById(@PathVariable Long codigo) {
-        Produto p = this.servico.Read(codigo);
-        return p;
+    public ResponseEntity<Produto> getById(@PathVariable Long codigo) {
+        Optional<Produto> opt = this.servico.Read(codigo);
+        if (opt.isPresent()) {
+            return new ResponseEntity<>(opt.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
-    public Produto post(@RequestBody Produto p) {
+    public ResponseEntity<Produto> post(@RequestBody Produto p) {
         Produto pnew = this.servico.Add(p);
-        return pnew;
+        return new ResponseEntity<>(pnew, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public Produto put(@RequestBody Produto p) {
+    public ResponseEntity<Produto> put(@RequestBody Produto p) {
         Produto palt = this.servico.Edit(p);
-        return palt;
+        if (palt != null) {
+            return new ResponseEntity<>(palt, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{codigo}")
-    public Produto delete(@PathVariable Long codigo) {
+    public ResponseEntity<Produto> delete(@PathVariable Long codigo) {
         Produto pdel = this.servico.Delete(codigo);
-        return pdel;
+        if (pdel != null) {
+            return new ResponseEntity<>(pdel, HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

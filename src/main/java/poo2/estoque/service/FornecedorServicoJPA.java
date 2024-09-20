@@ -24,8 +24,8 @@ public class FornecedorServicoJPA implements IBaseServicoJPA<Fornecedor> {
     }
 
     @Override
-    public Fornecedor Read(Long chave) {
-        return this.repositorio.findById(chave).get();
+    public Optional<Fornecedor> Read(Long chave) {
+        return this.repositorio.findById(chave);
     }
 
     @Override

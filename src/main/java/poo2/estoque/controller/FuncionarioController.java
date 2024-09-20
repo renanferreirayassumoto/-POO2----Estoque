@@ -1,8 +1,11 @@
 package poo2.estoque.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,32 +29,44 @@ public class FuncionarioController {
     }
 
     @GetMapping
-    public List<Funcionario> getAll() {
+    public ResponseEntity<List<Funcionario>> getAll() {
         List<Funcionario> f = this.servico.Browse();
-        return f;
+        return new ResponseEntity<>(f, HttpStatus.OK);
     }
 
     @GetMapping("/{codigo}")
-    public Funcionario getById(@PathVariable Long codigo) {
-        Funcionario f = this.servico.Read(codigo);
-        return f;
+    public ResponseEntity<Funcionario> getById(@PathVariable Long codigo) {
+        Optional<Funcionario> opt = this.servico.Read(codigo);
+        if (opt.isPresent()) {
+            return new ResponseEntity<>(opt.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
-    public Funcionario post(@RequestBody Funcionario f) {
+    public ResponseEntity<Funcionario> post(@RequestBody Funcionario f) {
         Funcionario fnew = this.servico.Add(f);
-        return fnew;
+        return new ResponseEntity<>(fnew, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public Funcionario put(@RequestBody Funcionario f) {
+    public ResponseEntity<Funcionario> put(@RequestBody Funcionario f) {
         Funcionario falt = this.servico.Edit(f);
-        return falt;
+        if (falt != null) {
+            return new ResponseEntity<>(falt, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{codigo}")
-    public Funcionario delete(@PathVariable Long codigo) {
+    public ResponseEntity<Funcionario> delete(@PathVariable Long codigo) {
         Funcionario fdel = this.servico.Delete(codigo);
-        return fdel;
+        if (fdel != null) {
+            return new ResponseEntity<>(fdel, HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

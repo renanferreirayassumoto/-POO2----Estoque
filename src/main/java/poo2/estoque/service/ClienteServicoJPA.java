@@ -24,9 +24,8 @@ public class ClienteServicoJPA implements IBaseServicoJPA<Cliente> {
     }
 
     @Override
-    public Cliente Read(Long chave) {
-        return this.repositorio.findById(chave).get();
-
+    public Optional<Cliente> Read(Long chave) {
+        return this.repositorio.findById(chave);
     }
 
     @Override

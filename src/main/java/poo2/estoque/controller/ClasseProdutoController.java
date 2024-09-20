@@ -1,8 +1,11 @@
 package poo2.estoque.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,41 +21,53 @@ import poo2.estoque.service.ClasseProdutoServicoJPA;
 @RestController
 @RequestMapping("/api/estoque/classeproduto")
 public class ClasseProdutoController {
-    
+
     @Autowired
     private ClasseProdutoServicoJPA servico;
 
-    public ClasseProdutoController(ClasseProdutoServicoJPA s){
+    public ClasseProdutoController(ClasseProdutoServicoJPA s) {
         this.servico = s;
-    }    
+    }
 
     @GetMapping
-    public List<ClasseProduto> getAll(){
+    public ResponseEntity<List<ClasseProduto>> getAll() {
         List<ClasseProduto> cp = this.servico.Browse();
-        return cp;
+        return new ResponseEntity<>(cp, HttpStatus.OK);
     }
 
     @GetMapping("/{codigo}")
-    public ClasseProduto getById(@PathVariable Long codigo){        
-        ClasseProduto cp = this.servico.Read(codigo);
-        return cp;
-    } 
+    public ResponseEntity<ClasseProduto> getById(@PathVariable Long codigo) {
+        Optional<ClasseProduto> opt = this.servico.Read(codigo);
+        if (opt.isPresent()) {
+            return new ResponseEntity<>(opt.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PostMapping
-    public ClasseProduto post(@RequestBody ClasseProduto cp) {
+    public ResponseEntity<ClasseProduto> post(@RequestBody ClasseProduto cp) {
         ClasseProduto cpnew = this.servico.Add(cp);
-        return cpnew;
+        return new ResponseEntity<>(cpnew, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ClasseProduto put(@RequestBody ClasseProduto cp){
+    public ResponseEntity<ClasseProduto> put(@RequestBody ClasseProduto cp) {
         ClasseProduto cpalt = this.servico.Edit(cp);
-        return cpalt;
+        if (cpalt != null) {
+            return new ResponseEntity<>(cpalt, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{codigo}")
-    public ClasseProduto delete(@PathVariable Long codigo){
+    public ResponseEntity<ClasseProduto> delete(@PathVariable Long codigo) {
         ClasseProduto cpdel = this.servico.Delete(codigo);
-        return cpdel;
+        if (cpdel != null) {
+            return new ResponseEntity<>(cpdel, HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

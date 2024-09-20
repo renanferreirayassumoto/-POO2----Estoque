@@ -24,8 +24,8 @@ public class FuncionarioServicoJPA implements IBaseServicoJPA<Funcionario> {
     }
 
     @Override
-    public Funcionario Read(Long chave) {
-        return this.repositorio.findById(chave).get();
+    public Optional<Funcionario> Read(Long chave) {
+        return this.repositorio.findById(chave);
     }
 
     @Override

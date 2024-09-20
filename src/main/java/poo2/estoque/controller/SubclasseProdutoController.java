@@ -1,8 +1,11 @@
 package poo2.estoque.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,32 +29,44 @@ public class SubclasseProdutoController {
     }
 
     @GetMapping
-    public List<SubclasseProduto> getAll() {
+    public ResponseEntity<List<SubclasseProduto>> getAll() {
         List<SubclasseProduto> p = this.servico.Browse();
-        return p;
+        return new ResponseEntity<>(p, HttpStatus.OK);
     }
 
     @GetMapping("/{codigo}")
-    public SubclasseProduto getById(@PathVariable Long codigo) {
-        SubclasseProduto p = this.servico.Read(codigo);
-        return p;
+    public ResponseEntity<SubclasseProduto> getById(@PathVariable Long codigo) {
+        Optional<SubclasseProduto> opt = this.servico.Read(codigo);
+        if (opt.isPresent()) {
+            return new ResponseEntity<>(opt.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
-    public SubclasseProduto post(@RequestBody SubclasseProduto sp) {
+    public ResponseEntity<SubclasseProduto> post(@RequestBody SubclasseProduto sp) {
         SubclasseProduto spnew = this.servico.Add(sp);
-        return spnew;
+        return new ResponseEntity<>(spnew, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public SubclasseProduto put(@RequestBody SubclasseProduto sp) {
+    public ResponseEntity<SubclasseProduto> put(@RequestBody SubclasseProduto sp) {
         SubclasseProduto spalt = this.servico.Edit(sp);
-        return spalt;
+        if (spalt != null) {
+            return new ResponseEntity<>(spalt, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{codigo}")
-    public SubclasseProduto delete(@PathVariable Long codigo) {
+    public ResponseEntity<SubclasseProduto> delete(@PathVariable Long codigo) {
         SubclasseProduto spdel = this.servico.Delete(codigo);
-        return spdel;
+        if (spdel != null) {
+            return new ResponseEntity<>(spdel, HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
