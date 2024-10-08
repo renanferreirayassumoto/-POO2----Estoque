@@ -1,13 +1,13 @@
 package poo2.estoque.service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
-import poo2.estoque.domain.ClasseProduto;
+import poo2.estoque.model.ClasseProduto;
 import poo2.estoque.repository.IClasseProdutoRepositorio;
 
 @Service
@@ -20,8 +20,8 @@ public class ClasseProdutoServicoJPA implements IBaseServicoJPA<ClasseProduto> {
     }
 
     @Override
-    public ArrayList<ClasseProduto> Browse() {
-        return new ArrayList<ClasseProduto>(this.repositorio.findAll());
+    public List<ClasseProduto> Browse() {
+        return this.repositorio.findAll();
     }
 
     @Override

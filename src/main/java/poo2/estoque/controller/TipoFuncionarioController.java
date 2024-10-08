@@ -1,6 +1,5 @@
 package poo2.estoque.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,29 +13,30 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
-import poo2.estoque.model.Cliente;
-import poo2.estoque.service.ClienteServicoJPA;
+import poo2.estoque.model.TipoFuncionario;
+import poo2.estoque.service.TipoFuncionarioServicoJPA;
 
 @RestController
-@RequestMapping("/api/cliente")
-public class ClienteController {
+@RequestMapping("/api/tipoFuncionario")
+public class TipoFuncionarioController {
     @Autowired
-    private ClienteServicoJPA servico;
+    private TipoFuncionarioServicoJPA servico;
 
-    public ClienteController(ClienteServicoJPA s) {
+    public TipoFuncionarioController(TipoFuncionarioServicoJPA s) {
         this.servico = s;
     }
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> getAll() {
-        List<Cliente> cp = this.servico.Browse();
-        return new ResponseEntity<>(cp, HttpStatus.OK);
+    public ResponseEntity<List<TipoFuncionario>> getAll() {
+        List<TipoFuncionario> tf = this.servico.Browse();
+        return new ResponseEntity<>(tf, HttpStatus.OK);
     }
 
     @GetMapping("/{codigo}")
-    public ResponseEntity<Cliente> getById(@PathVariable Long codigo) {
-        Optional<Cliente> opt = this.servico.Read(codigo);
+    public ResponseEntity<TipoFuncionario> getById(@PathVariable Long codigo) {
+        Optional<TipoFuncionario> opt = this.servico.Read(codigo);
         if (opt.isPresent()) {
             return new ResponseEntity<>(opt.get(), HttpStatus.OK);
         } else {
@@ -45,26 +45,26 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> post(@RequestBody Cliente c) {
-        Cliente cnew = this.servico.Add(c);
+    public ResponseEntity<TipoFuncionario> post(@RequestBody TipoFuncionario tf) {
+        TipoFuncionario cnew = this.servico.Add(tf);
         return new ResponseEntity<>(cnew, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Cliente> put(@RequestBody Cliente c) {
-        Cliente calt = this.servico.Edit(c);
-        if (calt != null) {
-            return new ResponseEntity<>(calt, HttpStatus.OK);
+    public ResponseEntity<TipoFuncionario> put(@RequestBody TipoFuncionario tf) {
+        TipoFuncionario tfalt = this.servico.Edit(tf);
+        if (tfalt != null) {
+            return new ResponseEntity<>(tfalt, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/{codigo}")
-    public ResponseEntity<Cliente> delete(@PathVariable Long codigo) {
-        Cliente cdel = this.servico.Delete(codigo);
-        if (cdel != null) {
-            return new ResponseEntity<>(cdel, HttpStatus.NO_CONTENT);
+    public ResponseEntity<TipoFuncionario> delete(@PathVariable Long codigo) {
+        TipoFuncionario tfdel = this.servico.Delete(codigo);
+        if (tfdel != null) {
+            return new ResponseEntity<>(tfdel, HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -1,12 +1,12 @@
 package poo2.estoque.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import poo2.estoque.domain.Funcionario;
+import poo2.estoque.model.Funcionario;
 import poo2.estoque.repository.IFuncionarioRepositorio;
 
 @Service
@@ -19,8 +19,8 @@ public class FuncionarioServicoJPA implements IBaseServicoJPA<Funcionario> {
     }
 
     @Override
-    public ArrayList<Funcionario> Browse() {
-        return new ArrayList<Funcionario>(this.repositorio.findAll());
+    public List<Funcionario> Browse() {
+        return this.repositorio.findAll();
     }
 
     @Override

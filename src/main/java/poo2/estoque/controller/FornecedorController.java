@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import poo2.estoque.domain.Fornecedor;
+import poo2.estoque.model.Fornecedor;
 import poo2.estoque.service.FornecedorServicoJPA;
 
 @RestController

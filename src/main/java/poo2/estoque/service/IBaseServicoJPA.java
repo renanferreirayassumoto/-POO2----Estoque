@@ -1,10 +1,10 @@
 package poo2.estoque.service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public interface IBaseServicoJPA<TDominio> {
-    ArrayList<TDominio> Browse();
+    List<TDominio> Browse();
 
     Optional<TDominio> Read(Long chave);
 

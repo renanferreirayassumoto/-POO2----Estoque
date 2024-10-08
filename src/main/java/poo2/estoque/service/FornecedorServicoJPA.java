@@ -1,12 +1,12 @@
 package poo2.estoque.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import poo2.estoque.domain.Fornecedor;
+import poo2.estoque.model.Fornecedor;
 import poo2.estoque.repository.IFornecedorRepositorio;
 
 @Service
@@ -19,8 +19,8 @@ public class FornecedorServicoJPA implements IBaseServicoJPA<Fornecedor> {
     }
 
     @Override
-    public ArrayList<Fornecedor> Browse() {
-        return new ArrayList<Fornecedor>(this.repositorio.findAll());
+    public List<Fornecedor> Browse() {
+        return this.repositorio.findAll();
     }
 
     @Override

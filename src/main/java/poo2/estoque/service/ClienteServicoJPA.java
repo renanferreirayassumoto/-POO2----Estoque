@@ -1,12 +1,12 @@
 package poo2.estoque.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import poo2.estoque.domain.Cliente;
+import poo2.estoque.model.Cliente;
 import poo2.estoque.repository.IClienteRepositorio;
 
 @Service
@@ -19,8 +19,8 @@ public class ClienteServicoJPA implements IBaseServicoJPA<Cliente> {
     }
 
     @Override
-    public ArrayList<Cliente> Browse() {
-        return new ArrayList<Cliente>(this.repositorio.findAll());
+    public List<Cliente> Browse() {
+        return this.repositorio.findAll();
     }
 
     @Override

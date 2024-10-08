@@ -1,25 +1,26 @@
-package poo2.estoque.domain;
-
-import java.time.LocalDate;
+package poo2.estoque.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import java.time.LocalDate;
 
-@MappedSuperclass
-public abstract class BaseIdentificador {
+@Entity
+public class TipoFuncionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long codigo;
+    private Long codigo;
 
     @DateTimeFormat(pattern = "yyy-MM-dd-HH.mm.ss")
-    protected LocalDate dataDeInclusao;
+    private LocalDate dataDeInclusao;
 
     @DateTimeFormat(pattern = "yyy-MM-dd-HH.mm.ss")
-    protected LocalDate dataDeAlteracao;
+    private LocalDate dataDeAlteracao;
+
+    private String descricao;
 
     public Long getCodigo() {
         return codigo;
@@ -45,13 +46,22 @@ public abstract class BaseIdentificador {
         this.dataDeAlteracao = dataDeAlteracao;
     }
 
-    public BaseIdentificador() {
+    public String getDescricao() {
+        return descricao;
     }
 
-    public BaseIdentificador(Long codigo, LocalDate dataDeInclusao, LocalDate dataDeAlteracao) {
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public TipoFuncionario() {
+    }
+
+    public TipoFuncionario(Long codigo, LocalDate dataDeInclusao, LocalDate dataDeAlteracao, String descricao) {
         this.codigo = codigo;
         this.dataDeInclusao = dataDeInclusao;
         this.dataDeAlteracao = dataDeAlteracao;
+        this.descricao = descricao;
     }
 
 }
